@@ -3,7 +3,7 @@ app = FastAPI()
 
 @app.get("/")
 
-def home():
+def read_root():
     return {"status": "ok"}
 
 
