@@ -1,10 +1,11 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
+from fastapi.responses import HTMLResponse
+from fastapi.templating import Jinja2Templates
+
 app = FastAPI()
 
-@app.get("/")
+templates = Jinja2Templates(directory="templates") #jinja used to later send data from backend to frontend 
 
-def read_root():
-    return {"status": "ok"}
-
-#fast api will later store frames sent from the index html via jinja2 
-#will run mediapipe and open cv later  
+@app.get("/", response_class=HTMLResponse) #links to html file
+async def home(request: Request):
+    return templates.TemplateResponse("index.html", {"request": request})
