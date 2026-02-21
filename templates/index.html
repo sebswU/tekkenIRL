@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<!DOCTYPE html>
 <html>
 <head>
     <title>Pose Tester</title>
@@ -8,8 +7,11 @@
     <h1>POSE CAPTURE!!!!!!!!</h1>
 
     <video id="webcam" autoplay playsinline width="640" height="480"></video> 
+    <button onclick = "captureFrame()">Capture Photo</button> 
+    <img id="photo" width="640" height="480" alt="Captured Photo"/>
     <script>
         const video = document.getElementById("webcam");
+        const photo = document.getElementById("photo");
 
         navigator.mediaDevices.getUserMedia({ video: true }) //if webcam is on
             .then(stream => {
@@ -17,8 +19,26 @@
             })
             .catch(err => {
                 console.error("Error accessing webcam:", err); //throw error if no webcam 
-            });
+            }); 
+
+    
+        //capture button
+        function captureFrame(){
+            const canvas = document.createElement("canvas"); //make canvas to store image capture
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            const context = canvas.getContext("2d");
+           context.drawImage(video, 0, 0, canvas.width, canvas.height);//draw out the img from webcam
+            const image_data = canvas.toDataURL('image/jpeg'); //convert capture to static jpeg
+
+            photo.src = image_data; //store image into photo to display under
+           
+        }
+       
+       
     </script>
+
+   
 
 </body>
 </html>
