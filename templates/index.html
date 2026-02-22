@@ -12,14 +12,16 @@
     <script>
         const video = document.getElementById("webcam");
         const photo = document.getElementById("photo");
-
         navigator.mediaDevices.getUserMedia({ video: true }) //if webcam is on
             .then(stream => {
-                video.srcObject = stream; //show video 
+                video.srcObject = stream; //show video
             })
             .catch(err => {
                 console.error("Error accessing webcam:", err); //throw error if no webcam 
             }); 
+        
+        
+
 
     
         //capture button
