@@ -9,8 +9,9 @@ import os
 import ssl
 import urllib.request
 
-MODEL_URL = 'https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_lite/float16/1/pose_landmarker_lite.task'
-MODEL_PATH = 'pose_landmarker_lite.task'
+MODEL_URL = 'https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_lite/float16/1/pose_landmarker_heavy.task'
+MODEL_PATH = 'pose_landmarker_heavy.task'
+
 
 class PoseEstimator:
     def __init__(self, model_path=MODEL_PATH):
@@ -115,43 +116,9 @@ class PoseEstimator:
         cap.release()
         cv2.destroyAllWindows()
 
-    def process_webcam(self):
-        """process webcam stream for pose estimation"""
-        fig = plt.figure()
-        ax = fig.add_subplot(111, projection='3d')
-        cap = cv2.VideoCapture(0)
-
-        while cap.isOpened():
-            ret, frame = cap.read()
-            if not ret:
-                break
-
-            results = self._detect(frame)
-            annotated_frame = self._draw_landmarks(frame, results.pose_landmarks)
-            cv2.imshow('Pose Estimation', annotated_frame)
-            ax.clear()
-
-            if results.pose_landmarks:
-                landmarks = results.pose_landmarks[0]
-                x = [lm.x for lm in landmarks]
-                y = [lm.y for lm in landmarks]
-                z = [lm.z for lm in landmarks]
-                ax.scatter(x, y, z)
-
-            ax.set_xlim(-1, 1)
-            ax.set_ylim(-1, 1)
-            ax.set_zlim(-1, 1)
-            ax.set_xlabel('X-axis')
-            ax.set_ylabel('Y-axis')
-            ax.set_zlabel('Z-axis')
-
-            plt.pause(0.001)
-            plt.show(block=False)
-
-            if cv2.waitKey(1) & 0xFF == ord('q'):
-                break
-
-        cap.release()
-        cv2.destroyAllWindows()
+    def process_frame(self, frame):
+        results = self._detect(frame)
+        annotated = self._draw_landmarks(frame, results.pose_landmarks)
+        return annotated
 
 
