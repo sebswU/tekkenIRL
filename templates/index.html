@@ -4,17 +4,47 @@
     <title>Pose Tester</title>
 </head>
 <body>
-    <h1>POSE ESTIMATION (Backend)</h1>
+    <h1>POSE ESTIMATION!!</h1>
 
-    <img src="/webcam" width="640" height="480">
+    <img src="/webcam" width="640" height="480" id="liveFeed">
 
-    <button onclick="capture()">Capture Photo</button>
+    <button id="myButton">Capture after 5 Second Countdown</button>
+    <p id="timerDisplay"></p>
+
+    <!-- Captured image -->
+    <h2>Captured Image:</h2>
+    <img id="capturedImage" width="640" height="480" alt="Captured photo will appear here">
 
     <script>
+        document.getElementById('myButton').onclick = function() {
+            let timeLeft = 5;
+            const display = document.getElementById('timerDisplay');
+
+            let countdown = setInterval(() => {
+                display.innerText = timeLeft;
+                timeLeft--;
+                if(timeLeft < 0) {
+                    clearInterval(countdown);
+                    display.innerText = "Strike a pose!";
+                    capture();
+                }
+            }, 1000);
+        }
+
         function capture() {
             fetch("/capture", { method: "POST" })
                 .then(res => res.json())
-                .then(data => alert(data.status));
+                .then(data => {
+                    if (data.status === "Photo saved") {
+                        const img = document.getElementById("capturedImage");
+                        img.src = "data:image/jpeg;base64," + data.image;
+                    } else {
+                        alert(data.status);
+                    }
+                })
+                .catch(err => {
+                    console.error("Error capturing:", err);
+                });
         }
     </script>
 </body>
