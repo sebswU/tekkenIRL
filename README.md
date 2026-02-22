@@ -1,4 +1,3 @@
----
 
 # Pose Tester: Live Human Pose Estimation
 
