@@ -55,7 +55,7 @@ python -m uvicorn main:app --reload
 ```
 
 5. Open your browser at `http://127.0.0.1:8000/` to see the live webcam feed.
-6. Press the **“Capture after 5 Second Countdown”** button to take a snapshot of your pose.
+6. Press the **“Capture after 5 Second Countdown”** button to take a snapshot of your pose, which can be right-clicked and saved accordingly.
 7. To restart the server, press **Command + C** (Mac) or **Control + C** (Windows/Linux) in your terminal.
 
 ---
